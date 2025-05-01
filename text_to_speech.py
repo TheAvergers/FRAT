@@ -4,6 +4,7 @@ import pygame
 import openai
 import subprocess
 import time
+import requests
 
 class TextToSpeech:
     def __init__(self, config):
@@ -27,22 +28,37 @@ class TextToSpeech:
         
         try:
             # Generate speech using OpenAI API with v0.28.0 syntax
-            response = openai.Audio.create(
-                model="tts-1",
-                voice=self.config.get('TTS_VOICE', 'alloy'),
-                input=text
+            # Direct API call for v0.28.0
+            headers = {
+                "Authorization": f"Bearer {openai.api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            data = {
+                "model": "tts-1",
+                "voice": self.config.get('TTS_VOICE', 'alloy'),
+                "input": text
+            }
+            
+            response = requests.post(
+                "https://api.openai.com/v1/audio/speech",
+                headers=headers,
+                json=data
             )
             
-            # Save speech to file
-            with open(temp_filename, 'wb') as f:
-                f.write(response.content)
-            
-            # Play the audio
-            print("Playing TTS audio")
-            pygame.mixer.music.load(temp_filename)
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy():
-                time.sleep(0.1)
+            if response.status_code == 200:
+                # Save speech to file
+                with open(temp_filename, 'wb') as f:
+                    f.write(response.content)
+                
+                # Play the audio
+                print("Playing TTS audio")
+                pygame.mixer.music.load(temp_filename)
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy():
+                    time.sleep(0.1)
+            else:
+                print(f"Error generating speech: {response.status_code} - {response.text}")
                 
         except Exception as e:
             print(f"Error generating speech: {e}")

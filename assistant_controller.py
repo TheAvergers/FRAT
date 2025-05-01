@@ -42,6 +42,9 @@ class AssistantController:
         # Track if TTS is currently speaking
         self.is_speaking = False
         
+        # Flag to prevent TTS overlap
+        self.tts_lock = threading.Lock()
+        
         # Set up face recognition callback
         self.setup_face_recognition_callback()
     
@@ -59,31 +62,28 @@ class AssistantController:
     
     def handle_wake_word(self, message, is_greeting):
         """Handle wake word detection with greeting or response"""
-        if is_greeting:
-            # This is the personalized greeting after wake word
-            print(f"Playing greeting: {message}")
-            self.is_speaking = True
-            self.tts.speak(message)
-            self.is_speaking = False
-        else:
-            # Handle the user's command
-            print(f"Processing command: {message}")
-            
-            # Extract just the command part from "You said: [command]"
-            command = message
-            if message.startswith("You said: "):
-                command = message[len("You said: "):]
+        with self.tts_lock:  # Prevent multiple TTS calls from overlapping
+            if is_greeting:
+                # This is the personalized greeting after wake word
+                print(f"Playing greeting: {message}")
+                self.is_speaking = True
+                self.tts.speak(message)
+                self.is_speaking = False
+            else:
+                # Handle the user's command
+                print(f"Processing command: {message}")
                 
-            # If it's an actual command (not just echoing back), process it
-            if not command.strip():
-                self.tts.speak("I didn't catch that. Could you try again?")
-                return
+                # Extract just the command part from "You said: [command]"
+                command = message
+                if message.startswith("You said: "):
+                    command = message[len("You said: "):]
+                    
+                # Echo back the command through TTS
+                self.is_speaking = True
+                self.tts.speak(command)
+                self.is_speaking = False
                 
-            response = self.process_command(command)
-            print(f"Speaking response: {response}")
-            self.is_speaking = True
-            self.tts.speak(response)
-            self.is_speaking = False
+                print("Command echo complete, returning to wake word detection")
     
     def process_command(self, command):
         """Process a command using OpenAI API"""
@@ -157,9 +157,9 @@ if __name__ == "__main__":
         'RECOGNITION_TIMEOUT': 300,  # seconds
         'WAKE_WORD': 'hey assistant',
         'TTS_VOICE': 'nova',  # Options: alloy, echo, fable, onyx, nova, shimmer
-        'SILENCE_THRESHOLD': 500,  # Updated from 1200 to 500
+        'SILENCE_THRESHOLD': 500,
         'MIN_SPEECH_DURATION': 0.5,
-        'PROMPT_SILENCE': 0.5  # Updated from 1.0 to 0.5
+        'PROMPT_SILENCE': 0.5
     }
     
     # Start assistant

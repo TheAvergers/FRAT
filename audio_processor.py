@@ -19,6 +19,8 @@ class AudioProcessor:
         # Using OpenAI v0.28.0 syntax
         openai.api_key = os.environ.get('OPENAI_API_KEY')
         self.wake_word = config['WAKE_WORD'].lower()
+        # Add "assistant" as a secondary wake word
+        self.alt_wake_word = "assistant"
         self.audio_queue = queue.Queue()
         self.is_processing = False
         self.stop_event = threading.Event()
@@ -35,6 +37,10 @@ class AudioProcessor:
         # Add wake word cooldown to prevent repeated detections
         self.last_wake_word_time = 0
         self.wake_word_cooldown = 3.0  # seconds
+        
+        # Track recent transcripts to avoid duplicates
+        self.recent_transcripts = []
+        self.max_recent_transcripts = 5
         
         # Wake word detection state
         self.processing_wake_word = False
@@ -152,9 +158,19 @@ class AudioProcessor:
                 if text:
                     print(f"Transcribed: {text}")
                 
-                # Check if wake word is in the transcript
-                if self.wake_word in text:
-                    print(f"Wake word '{self.wake_word}' detected!")
+                # Check if this is a duplicate transcript
+                is_duplicate = text in self.recent_transcripts
+                
+                # Add to recent transcripts list and maintain its size
+                if not is_duplicate:
+                    self.recent_transcripts.append(text)
+                    if len(self.recent_transcripts) > self.max_recent_transcripts:
+                        self.recent_transcripts.pop(0)
+                
+                # Check if wake word is in the transcript (including alternative wake word)
+                if (self.wake_word in text or self.alt_wake_word in text) and not is_duplicate:
+                    detected_word = self.wake_word if self.wake_word in text else self.alt_wake_word
+                    print(f"Wake word '{detected_word}' detected!")
                     
                     # Update the last detection time
                     self.last_wake_word_time = time.time()
@@ -162,10 +178,11 @@ class AudioProcessor:
                     # Reset buffer AFTER detection to avoid re-detecting the same audio
                     self.audio_buffer = np.array([], dtype=np.int16)
                     
-                    # Greet with personalized message
-                    greeting = "How may I help?"
+                    # Create personalized greeting with proper format
                     if self.last_recognized_user:
-                        greeting = f"{self.last_recognized_user}, how may I help?"
+                        greeting = f"What do you need {self.last_recognized_user}?"
+                    else:
+                        greeting = "What do you need?"
                     
                     # Call the activation callback if one is set
                     if self.activation_callback:
@@ -178,7 +195,7 @@ class AudioProcessor:
                         command = self.listen_for_command(6)  # 6 second timeout
                         
                         if command:
-                            # Send command to callback
+                            # Echo back the command through TTS
                             self.activation_callback(f"You said: {command}", False)
                 
             except Exception as e:
