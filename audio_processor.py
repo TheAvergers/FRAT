@@ -22,7 +22,7 @@ class AudioProcessor:
         self.audio_buffer = np.array([], dtype=np.int16)
         self.activation_callback = None
         self.last_recognized_user = None
-        self.silence_threshold = config.get('SILENCE_THRESHOLD', 500)
+        self.silence_threshold = config.get('SILENCE_THRESHOLD', 200)
         self.max_buffer_size = self.config['AUDIO_SAMPLE_RATE'] * 3  # 3-second buffer
         self.last_wake_word_time = 0
         self.wake_word_cooldown = 3.0

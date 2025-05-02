@@ -11,55 +11,47 @@ from network_utils import purge_port
 
 class AssistantController:
     def __init__(self, config):
-        """Initialize the assistant controller with all components"""
+        """Initialize all assistant components"""
         self.config = config
-
-        # Mode: 'command' or 'conversation'
         self.mode = config.get('MODE', 'command')
 
-        # Ensure API key is available
         if not os.environ.get('OPENAI_API_KEY'):
             raise ValueError("OPENAI_API_KEY environment variable is not set")
 
-        # Purge any existing streams on configured ports
+        # Close existing streams
         purge_port(config['VIDEO_STREAM_PORT'])
         purge_port(config['AUDIO_STREAM_PORT'])
 
-        # Initialize Text-to-Speech first
+        # Initialize TTS
         self.tts = TextToSpeech(config)
-        # Give TTS a moment to initialize
         time.sleep(0.5)
 
-        # Initialize face recognizer and audio processor
+        # Initialize face and audio
         self.face_recognizer = FaceRecognizer(config)
         self.audio_processor = AudioProcessor(config)
 
-        # Initialize command handler in selected mode
+        # Command handler
         self.command_handler = CommandHandler(tts_engine=self.tts, mode=self.mode)
 
-        # Configure OpenAI
         openai.api_key = os.environ.get('OPENAI_API_KEY')
 
-        # Track last recognized user for personalization
         self.last_recognized_user = None
-
-        # Lock to prevent overlapping TTS
         self.tts_lock = threading.Lock()
         self.is_speaking = False
 
-        # Conversation history for context
         self.conversation_history = []
         self.max_history_length = config.get('MAX_HISTORY_LENGTH', 10)
 
-        # Wire up callbacks
+        # To track how each command was handled
+        self.last_command_type = None
+
+        # Callbacks
         self.audio_processor.set_activation_callback(self.handle_wake_word)
         self.setup_face_recognition_callback()
 
-        # Running flag
         self.running = False
 
     def setup_face_recognition_callback(self):
-        """Register a callback to capture recognized faces"""
         def on_face_recognized(name):
             print(f"Face recognition update: {name}")
             self.last_recognized_user = name
@@ -67,86 +59,77 @@ class AssistantController:
         self.face_recognizer.set_recognition_callback(on_face_recognized)
 
     def handle_wake_word(self, message, is_greeting):
-        """Handle the wake-word event: greeting vs. command"""
+        """Called on wake - greeting or process a single-step command"""
         with self.tts_lock:
             if is_greeting:
-                # Play personalized greeting
                 print(f"Playing greeting: {message}")
                 self.is_speaking = True
                 self.tts.speak(message)
                 self.is_speaking = False
             else:
-                # Process the follow-up command
-                print(f"Processing command: {message}")
-                # Extract the raw command text
-                cmd_text = message
-                if message.lower().startswith("you said:"):
-                    cmd_text = message[len("you said:"):].strip()
-                response = self.process_command(cmd_text)
-                # Speak the response
+                # message is the full transcribed utterance minus wake-word
+                print(f"Received command text: {message}")
+                response, cmd_type = self.process_command(message)
+                print(f"Handled via: {cmd_type}")
                 self.is_speaking = True
                 self.tts.speak(response)
                 self.is_speaking = False
                 print("Command processed, returning to wake word detection")
 
-    def process_command(self, command_text):
-        """Determine intent and execute or delegate to OpenAI"""
+    def process_command(self, raw_text):
+        """
+        Parse and execute or delegate to OpenAI.
+        Returns (response_text, command_type)
+        """
         try:
-            # Parse intent
-            cmd_type, cmd_args, raw_text = self.command_handler.parse_command(command_text)
+            cmd_type, cmd_args, stripped = self.command_handler.parse_command(raw_text)
+            # track for external inspection
+            self.last_command_type = cmd_type
 
-            # If a built-in command, execute it directly
+            # Built-in commands take priority
             if cmd_type != 'general_query':
-                result = self.command_handler.execute_command(cmd_type, cmd_args, raw_text)
+                result = self.command_handler.execute_command(cmd_type, cmd_args, stripped)
                 print(f"Command executed: {cmd_type}, Result: {result}")
-                return result
+                return result, cmd_type
 
-            # Otherwise, build OpenAI messages
+            # Prepare system prompt
             system_prompt = (
-                "You are a helpful home assistant. "
-                "Keep responses brief and conversational."
+                "You are a helpful home assistant. Keep responses brief and conversational."
             )
             if self.last_recognized_user:
                 system_prompt += f" The user's name is {self.last_recognized_user}."
 
+            # Build message list
             messages = [{"role": "system", "content": system_prompt}]
-            # Append recent history
-            for msg in self.conversation_history:
-                messages.append(msg)
-            # Append current user query
-            messages.append({"role": "user", "content": raw_text})
+            messages.extend(self.conversation_history)
+            messages.append({"role": "user", "content": stripped})
 
-            # Call the OpenAI ChatCompletion API
+            # Query OpenAI
             completion = openai.ChatCompletion.create(
                 model="gpt-4",
                 messages=messages,
                 max_tokens=150,
                 temperature=0.7
             )
-            ai_response = completion.choices[0].message.content
-            print(f"Assistant response: {ai_response}")
+            ai_resp = completion.choices[0].message.content
+            print(f"Assistant response: {ai_resp}")
 
-            # Post-process any described actions
-            self._execute_ai_actions(ai_response, raw_text)
+            # Execute any declared actions
+            self._execute_ai_actions(ai_resp, stripped)
 
-            # Update conversation history
-            self.conversation_history.append({"role": "user", "content": raw_text})
-            self.conversation_history.append({"role": "assistant", "content": ai_response})
-            # Trim history
+            # Update history
+            self.conversation_history.append({"role": "user", "content": stripped})
+            self.conversation_history.append({"role": "assistant", "content": ai_resp})
             if len(self.conversation_history) > self.max_history_length * 2:
                 self.conversation_history = self.conversation_history[-self.max_history_length*2:]
 
-            return ai_response
+            return ai_resp, cmd_type
 
         except Exception as e:
             print(f"Error processing command: {e}")
-            return "Sorry, I had trouble processing your request."
+            return "Sorry, I had trouble processing your request.", 'error'
 
     def _execute_ai_actions(self, response_text, original_text):
-        """
-        If the AI response mentions a system action (lights, reminders, timers),
-        execute it via the CommandHandler.
-        """
         resp = response_text.lower()
         try:
             if 'lights on' in resp or 'turned the lights on' in resp:
@@ -161,7 +144,6 @@ class AssistantController:
             print(f"AI action execution error: {e}")
 
     def start(self):
-        """Start the assistant's audio and face pipelines"""
         if self.running:
             print("Assistant is already running")
             return
@@ -174,7 +156,6 @@ class AssistantController:
         print("Assistant started")
 
     def stop(self):
-        """Stop audio and face streams"""
         if not self.running:
             print("Assistant is not running")
             return
@@ -183,7 +164,6 @@ class AssistantController:
         print("Assistant stopped")
 
 if __name__ == "__main__":
-    # Example config; adjust as needed
     config = {
         'VIDEO_STREAM_PORT': 1234,
         'VIDEO_WIDTH': 640,
@@ -209,4 +189,3 @@ if __name__ == "__main__":
             time.sleep(1)
     except KeyboardInterrupt:
         assistant.stop()
-
