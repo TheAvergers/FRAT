@@ -5,6 +5,7 @@ import openai
 import subprocess
 import time
 import requests
+import errno
 
 class TextToSpeech:
     def __init__(self, config):
@@ -64,9 +65,22 @@ class TextToSpeech:
             print(f"Error generating speech: {e}")
             
         finally:
-            # Clean up temporary file
+            # Clean up temporary file safely
             if os.path.exists(temp_filename):
-                os.unlink(temp_filename)
+                for attempt in range(5):
+                    try:
+                        os.unlink(temp_filename)
+                        print(f"Temporary TTS file {temp_filename} deleted successfully.")
+                        break
+                    except OSError as e:
+                        if e.errno == errno.EACCES:
+                            print(f"TTS temp file still in use (attempt {attempt+1}/5), retrying...")
+                            time.sleep(0.5)
+                        else:
+                            print(f"Unexpected error deleting temp file: {e}")
+                            break
+                else:
+                    print(f"Warning: Failed to delete TTS temp file after retries: {temp_filename}")
 
 
 if __name__ == "__main__":
