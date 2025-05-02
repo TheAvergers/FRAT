@@ -1,0 +1,18 @@
+# .gitignore for your Python Voice Assistant project
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+
+# Environment variables
+.env
+
+# Other OS / Editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
