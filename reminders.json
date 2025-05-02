@@ -18,5 +18,13 @@
   "5": {
     "text": "list reminders.",
     "time": null
+  },
+  "6": {
+    "text": ", show reminders.",
+    "time": null
+  },
+  "7": {
+    "text": "set a reminder to eat at 12 a.m.",
+    "time": null
   }
 }

@@ -64,107 +64,163 @@ class CommandHandler:
         if self.mode == 'conversation':
             return 'general_query', None, txt
 
-        # Keywords classification in priority order
-        if any(k in low for k in ['remind', 'reminder']):
+        # List reminders first: matches 'list/show ... reminder(s)'
+        if re.search(r"\b(?:list|show)\b.*\breminders?\b", low):
+            return 'list_reminders', None, txt
+
+        # Reminder setting: only when explicitly creating
+        if re.search(r"\b(?:set|create)\b.*\breminder\b", low) or re.search(r"\bremind me to\b", low):
             return 'reminder', (txt,), txt
+
+        # Timer detection
         if 'timer' in low or 'countdown' in low:
             return 'timer', (txt,), txt
+
+        # Lights control
         if 'light' in low:
-            # detect on/off
-            if ' on ' in low or low.startswith('on '): cmd_args = ('on',)
-            elif ' off ' in low or low.startswith('off '): cmd_args = ('off',)
-            else: cmd_args = (txt,)
-            return 'lights', cmd_args, txt
-        if low.startswith('play ') or ' music' in low or 'song' in low:
+            if re.search(r"\b(on|off)\b", low):
+                state = 'on' if 'on' in low else 'off'
+                return 'lights', (state,), txt
+            return 'lights', (txt,), txt
+
+        # Music control
+        if re.search(r"\bplay\b.*\bmusic\b|\bmusic\b.*\bplay\b|song", low):
             return 'music', None, txt
         if 'stop music' in low or 'pause music' in low:
             return 'stop_music', None, txt
+
+        # Volume adjustment
         if 'volume' in low or 'louder' in low or 'softer' in low:
             return 'volume', (txt,), txt
-        if 'list reminders' in low or 'show reminders' in low:
-            return 'list_reminders', None, txt
+
+        # Web search
         if any(k in low for k in ['search ', 'look up', 'find ', 'google ']):
             return 'search', (txt,), txt
+
+        # Open applications / links
         if any(k in low for k in ['open ', 'launch ', 'start ']):
             return 'open', (txt,), txt
+
+        # News and jokes
         if 'news' in low or 'headline' in low:
             return 'news', None, txt
         if 'joke' in low or 'funny' in low:
             return 'joke', None, txt
+
+        # Calendar/schedule
         if any(k in low for k in ['calendar', 'schedule', 'agenda']):
             return 'calendar', None, txt
-        # weather location first
+
+        # Weather patterns
         m = re.search(r'weather in ([\w ]+)', low)
         if m:
             return 'weather_location', (m.group(1).strip(),), txt
         if 'weather' in low:
             return 'weather', None, txt
+
+        # Time/date
         if 'time' in low:
             return 'time', None, txt
         if 'date' in low or 'day' in low:
             return 'date', None, txt
 
-        # fallback
+        # General fallback
         return 'general_query', None, txt
 
     def execute_command(self, cmd, args=None, raw_text="", user_context=None):
         """Execute handler based on intent"""
-        if cmd == 'reminder': return self._handle_reminder(args[0])
-        if cmd == 'timer': return self._handle_timer(args[0])
-        if cmd == 'lights': return self._handle_lights(args[0] if args else '')
-        if cmd == 'music': return self._handle_music_play()
-        if cmd == 'stop_music': return self._handle_music_stop()
-        if cmd == 'volume': return self._handle_volume(args[0])
-        if cmd == 'list_reminders': return self._handle_list_reminders()
-        if cmd == 'search': return self._handle_search(args[0])
-        if cmd == 'open': return self._handle_open(args[0])
-        if cmd == 'news': return self._handle_news()
-        if cmd == 'joke': return self._handle_joke()
-        if cmd == 'calendar': return self._handle_calendar()
-        if cmd == 'weather_location': return self._handle_weather_location(args[0])
-        if cmd == 'weather': return self._handle_weather()
-        if cmd == 'time': return self._handle_time()
-        if cmd == 'date': return self._handle_date()
-        if cmd == 'general_query': return None
+        mapping = {
+            'reminder': self._handle_reminder,
+            'timer': self._handle_timer,
+            'lights': self._handle_lights,
+            'music': self._handle_music_play,
+            'stop_music': self._handle_music_stop,
+            'volume': self._handle_volume,
+            'list_reminders': self._handle_list_reminders,
+            'search': self._handle_search,
+            'open': self._handle_open,
+            'news': self._handle_news,
+            'joke': self._handle_joke,
+            'calendar': self._handle_calendar,
+            'weather_location': self._handle_weather_location,
+            'weather': self._handle_weather,
+            'time': self._handle_time,
+            'date': self._handle_date,
+        }
+        if cmd in mapping:
+            return mapping[cmd](*(args or []))
+        if cmd == 'general_query':
+            return None
         return "Sorry, I didn't understand that."
 
-    # Built-in handlers (same as before)
+    # Built-in handlers
     def _handle_time(self):
         now = datetime.datetime.now().strftime('%I:%M %p')
         return f"The current time is {now}."
+
     def _handle_date(self):
         today = datetime.datetime.now().strftime('%A, %B %d, %Y')
         return f"Today is {today}."
+
     def _handle_weather(self):
         return "Weather features coming soon."
+
     def _handle_weather_location(self, location):
         return f"Weather for {location} coming soon."
+
     def _handle_reminder(self, txt):
-        # Parse time
         m = re.search(r'(?:at|for) (\d{1,2}(?::\d{2})? ?(?:am|pm))', txt, re.IGNORECASE)
         tm = m.group(1) if m else None
-        content = txt if not tm else txt.replace(m.group(0), '').strip()
-        rid = self.timer_counter + 1; self.timer_counter = rid
+        content = txt if not m else txt.replace(m.group(0), '').strip()
+        rid = self.timer_counter + 1
+        self.timer_counter = rid
         self.active_reminders[rid] = {'text': content, 'time': tm}
         self._save_reminders()
         return f"Okay! I'll remind you to {content}" + (f" at {tm}." if tm else '.')
-    def _handle_timer(self, duration): return f"Timer set for {duration}."
-    def _handle_lights(self, state): return f"Lights turned {state}."
-    def _handle_music_play(self): return "Playing music."
-    def _handle_music_stop(self): return "Music stopped."
-    def _handle_volume(self, lvl): return f"Volume set to {lvl}."
+
+    def _handle_timer(self, duration):
+        return f"Timer set for {duration}."
+
+    def _handle_lights(self, state):
+        return f"Lights turned {state}."
+
+    def _handle_music_play(self):
+        return "Playing music."
+
+    def _handle_music_stop(self):
+        return "Music stopped."
+
+    def _handle_volume(self, lvl):
+        return f"Volume set to {lvl}."
+
     def _handle_search(self, qry):
         webbrowser.open(f"https://google.com/search?q={urllib.parse.quote(qry)}")
         return f"Searched for {qry}."
-    def _handle_open(self, app): return f"Opened {app}."
-    def _handle_news(self): return "News fetching coming soon."
-    def _handle_joke(self): return random.choice([
-        "Why don't scientists trust atoms? Because they make up everything!",
-        "I told my wife she was drawing her eyebrows too high. She looked surprised."
-    ])
+
+    def _handle_open(self, app):
+        return f"Opened {app}."
+
+    def _handle_news(self):
+        return "News fetching coming soon."
+
+    def _handle_joke(self):
+        return random.choice([
+            "Why don't scientists trust atoms? Because they make up everything!",
+            "I told my wife she was drawing her eyebrows too high. She looked surprised."
+        ])
+
     def _handle_calendar(self):
-        now = datetime.datetime.now(); return f"Meeting at {(now + timedelta(hours=1)).strftime('%I:%M %p')}"
+        now = datetime.datetime.now()
+        return f"Meeting at {(now + timedelta(hours=1)).strftime('%I:%M %p')}"
+
     def _handle_list_reminders(self):
-        if not self.active_reminders: return "You have no reminders."
-        return "Your reminders:" + ''.join([f"\n[{rid}] {info['text']}" + (f" at {info['time']}" if info['time'] else '')
-                                            for rid, info in sorted(self.active_reminders.items())])
+        if not self.active_reminders:
+            return "You have no reminders."
+        lines = []
+        for rid, info in sorted(self.active_reminders.items()):
+            line = f"[{rid}] {info['text']}"
+            if info['time']:
+                line += f" at {info['time']}"
+            lines.append(line)
+        return "Your reminders:" + "\n".join(lines)
+
