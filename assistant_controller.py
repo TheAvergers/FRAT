@@ -3,6 +3,7 @@ import time
 import threading
 import openai
 from face_recognition import FaceRecognizer
+from command_handler import CommandHandler
 from audio_processor import AudioProcessor
 from text_to_speech import TextToSpeech
 from network_utils import purge_port
@@ -16,17 +17,25 @@ class AssistantController:
         if not os.environ.get('OPENAI_API_KEY'):
             raise ValueError("OPENAI_API_KEY environment variable is not set")
         
-        # Initialize OpenAI with v0.28.0 syntax
-        openai.api_key = os.environ.get('OPENAI_API_KEY')
-        
         # Clean up ports before starting
         purge_port(config['VIDEO_STREAM_PORT'])
         purge_port(config['AUDIO_STREAM_PORT'])
         
-        # Initialize components
+        # Initialize components - important to initialize TTS first!
+        self.tts = TextToSpeech(config)
+        
+        # Wait a moment for TTS to initialize properly
+        time.sleep(0.5)
+        
+        # Initialize remaining components after TTS
         self.face_recognizer = FaceRecognizer(config)
         self.audio_processor = AudioProcessor(config)
-        self.tts = TextToSpeech(config)
+        
+        # Initialize command handler after TTS is initialized
+        self.command_handler = CommandHandler(tts_engine=self.tts)
+
+        # Initialize OpenAI with v0.28.0 syntax
+        openai.api_key = os.environ.get('OPENAI_API_KEY')
         
         # Last recognized user for personalized responses
         self.last_recognized_user = None
@@ -47,6 +56,10 @@ class AssistantController:
         
         # Set up face recognition callback
         self.setup_face_recognition_callback()
+        
+        # Conversation history for context
+        self.conversation_history = []
+        self.max_history_length = 10
     
     def setup_face_recognition_callback(self):
         """Set up callback for face recognition updates"""
@@ -78,69 +91,111 @@ class AssistantController:
                 if message.startswith("You said: "):
                     command = message[len("You said: "):]
                     
-                # Echo back the command through TTS
+                # Process the command with OpenAI
+                response = self.process_command(command)
+                    
+                # Speak the response
                 self.is_speaking = True
-                self.tts.speak(command)
+                self.tts.speak(response)
                 self.is_speaking = False
                 
-                print("Command echo complete, returning to wake word detection")
+                print("Command processed, returning to wake word detection")
     
     def process_command(self, command):
-        """Process a command using OpenAI API"""
+        """Process a command using OpenAI API and CommandHandler"""
         print(f"Processing command: {command}")
         
         try:
+            # Parse the command to determine intent
+            cmd_type, cmd_args, raw_text = self.command_handler.parse_command(command)
+            
+            # For system commands, use direct handling
+            if cmd_type != 'general_query':
+                response = self.command_handler.execute_command(cmd_type, cmd_args, raw_text)
+                print(f"Command executed: {cmd_type}, Response: {response}")
+                return response
+            
+            # Otherwise, use OpenAI for general queries
+            # Personalize the system message based on the user if available
+            system_message = "You are a helpful home assistant. Keep responses brief and conversational as they will be spoken aloud."
+            
+            if self.last_recognized_user:
+                system_message += f" The user's name is {self.last_recognized_user}."
+                
+            # Add context from conversation history if available
+            messages = [{"role": "system", "content": system_message}]
+            
+            # Include recent conversation history for context
+            for msg in self.conversation_history:
+                messages.append(msg)
+                
+            # Add the current command
+            messages.append({"role": "user", "content": command})
+            
             # Using OpenAI v0.28.0 syntax
             completion = openai.ChatCompletion.create(
-                model="gpt-4",  # Using gpt-4 instead of gpt-4o which wasn't available in v0.28.0
-                messages=[
-                    {"role": "system", "content": "You are a helpful assistant. Keep responses brief and conversational as they will be spoken aloud."},
-                    {"role": "user", "content": command}
-                ]
+                model="gpt-4",
+                messages=messages,
+                max_tokens=150,  # Keep responses concise for voice
+                temperature=0.7
             )
             
             response = completion.choices[0].message.content
             print(f"Assistant response: {response}")
+            
+            # Update conversation history
+            self.conversation_history.append({"role": "user", "content": command})
+            self.conversation_history.append({"role": "assistant", "content": response})
+            
+            # Limit conversation history size
+            if len(self.conversation_history) > self.max_history_length * 2:  # *2 because each exchange has 2 messages
+                self.conversation_history = self.conversation_history[-self.max_history_length*2:]
+                
             return response
             
         except Exception as e:
             print(f"Error processing command: {e}")
             return "Sorry, I had trouble processing your request."
-    
+            
     def start(self):
-        """Start the assistant system"""
+        """Start all assistant components"""
         if self.running:
-            print("Assistant already running")
+            print("Assistant is already running")
             return
             
         self.running = True
         
-        # Start face recognition in a separate thread
-        self.face_thread = threading.Thread(
-            target=self.face_recognizer.run_recognition_loop,
-            daemon=True
-        )
-        self.face_thread.start()
-        
-        # Start audio processing
+        # Start TTS first to ensure it's ready for other components
+        print("Starting audio processing...")
+        # Start audio processing first
         self.audio_processor.start_audio_processing()
         
-        print("Assistant system started and running")
-    
+        # Give audio processing a moment to initialize
+        time.sleep(0.5)
+        
+        # Start face recognition in a separate thread
+        print("Starting face recognition...")
+        self.face_recognizer.run_recognition_loop()
+        
+        print("Assistant started")
+        
     def stop(self):
-        """Stop the assistant system"""
+        """Stop all assistant components"""
         if not self.running:
-            print("Assistant not running")
+            print("Assistant is not running")
             return
             
-        print("Stopping assistant system...")
         self.running = False
         
         # Stop audio processing
-        self.audio_processor.stop_audio_processing()
-        
-        # Face recognition thread will be terminated as daemon
-        print("Assistant system stopped")
+        if hasattr(self.audio_processor, 'stop_audio_processing'):
+            self.audio_processor.stop_audio_processing()
+            
+        # Stop face recognition
+        if hasattr(self.face_recognizer, 'stop_face_recognition'):
+            self.face_recognizer.stop_face_recognition()
+            
+        print("Assistant stopped")
 
 
 if __name__ == "__main__":

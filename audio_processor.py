@@ -153,7 +153,7 @@ class AudioProcessor:
                         temperature=0.0,
                         prompt=f"The wake word is '{self.wake_word}'. Listen carefully."
                     )
-                    
+                        
                 text = transcript["text"].lower().strip()
                 if text:
                     print(f"Transcribed: {text}")
@@ -168,7 +168,8 @@ class AudioProcessor:
                         self.recent_transcripts.pop(0)
                 
                 # Check if wake word is in the transcript (including alternative wake word)
-                if (self.wake_word in text or self.alt_wake_word in text) and not is_duplicate:
+                if (self.wake_word in text or self.alt_wake_word in text or 
+                    any(word in text for word in ["hey assistant", "assistant", "asisant"])) and not is_duplicate:
                     detected_word = self.wake_word if self.wake_word in text else self.alt_wake_word
                     print(f"Wake word '{detected_word}' detected!")
                     
@@ -195,7 +196,7 @@ class AudioProcessor:
                         command = self.listen_for_command(6)  # 6 second timeout
                         
                         if command:
-                            # Echo back the command through TTS
+                            # Send the command to the callback for processing
                             self.activation_callback(f"You said: {command}", False)
                 
             except Exception as e:
@@ -225,6 +226,7 @@ class AudioProcessor:
         with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as tmp_file:
             temp_filename = tmp_file.name
             
+
         # Record audio for command
         start_time = time.time()
         command_buffer = np.array([], dtype=np.int16)
@@ -311,11 +313,11 @@ class AudioProcessor:
                     temperature=0.0,
                     prompt="This is a voice command. Transcribe exactly what the person said."
                 )
-                
+   
             command = transcript["text"].strip()
             print(f"Command transcribed: {command}")
             return command
-            
+
         except Exception as e:
             print(f"Error recording command: {e}")
             return ""
