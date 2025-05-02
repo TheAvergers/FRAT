@@ -3,7 +3,6 @@ import datetime
 import subprocess
 import os
 import json
-import openai
 import time
 import threading
 import requests
@@ -18,119 +17,119 @@ from datetime import timedelta
 class CommandHandler:
     """Handles parsing and execution of user commands"""
     
-    def __init__(self, tts_engine=None):
-        """Initialize command handler with optional TTS engine"""
+    def __init__(self, tts_engine=None, mode='command'):
+        """Initialize command handler with optional TTS engine and mode"""
         self.tts_engine = tts_engine
-        self.openai_client = openai
+        self.mode = mode  # 'command' or 'conversation'
         
         # Define command patterns
         self.command_patterns = {
             'time': r'\b(what (?:time|hour) is it|tell me the time)\b',
             'date': r'\b(what (?:day|date) is (?:it|today)|tell me the date)\b',
-            'weather': r'\b(what\'?s the weather(?: like)?|how\'?s the weather|weather forecast)\b',
-            'reminder': r'\b(?:set|create) (?:a |an )?reminder(?: for| to)? (.+)',
-            'timer': r'\b(?:set|create) (?:a |an )?timer for (.+)',
-            'lights': r'\b(turn|switch) (on|off) (?:the )?lights\b',
-            'music': r'\b(?:play|start) (?:some |the )?music\b',
-            'stop_music': r'\b(?:stop|pause) (?:the )?music\b',
-            'volume': r'\b(?:set|change|adjust) (?:the )?volume(?: to)? (.+)',
-            'search': r'\b(?:search|look up|find|google) (.+)',
-            'open': r'\b(?:open|launch|start) (.+)',
-            'news': r'\b(?:what\'?s|latest|get|tell me) (?:the )?news\b',
-            'joke': r'\b(?:tell me a |say a |give me a )?joke\b',
-            'calendar': r'\b(?:what\'?s (?:on |in )?my |show |check )(?:calendar|schedule)\b',
-            'weather_location': r'\b(?:what\'?s the weather(?: like)? in|how\'?s the weather in) (.+)',
+            'weather': r"\b(what'?s the weather(?: like)?|how'?s the weather|weather forecast)\b",
+            'reminder': r"\b(?:set|create) (?:a |an )?reminder(?: for| to)? (.+)",
+            'timer': r"\b(?:set|create) (?:a |an )?timer for (.+)",
+            'lights': r"\b(turn|switch) (on|off) (?:the )?lights\b",
+            'music': r"\b(?:play|start) (?:some |the )?music\b",
+            'stop_music': r"\b(?:stop|pause) (?:the )?music\b",
+            'volume': r"\b(?:set|change|adjust) (?:the )?volume(?: to)? (.+)",
+            'search': r"\b(?:search|look up|find|google) (.+)",
+            'open': r"\b(?:open|launch|start) (.+)",
+            'news': r"\b(?:what'?s|latest|get|tell me) (?:the )?news\b",
+            'joke': r"\b(?:tell me a |say a |give me a )?joke\b",
+            'calendar': r"\b(?:what'?s (?:on |in )?my |show |check )(?:calendar|schedule)\b",
+            'weather_location': r"\b(?:what'?s the weather(?: like)? in|how'?s the weather in) (.+)",
         }
         
-        # Set up active timers and reminders
+        # Active timers and reminders
         self.active_timers = {}
         self.active_reminders = {}
         self.timer_counter = 0
         
+    def set_mode(self, mode):
+        """Set the handler mode ('command' or 'conversation')"""
+        self.mode = mode
+
     def parse_command(self, text, user_context=None):
         """
         Parse the user's command and determine intent
         Returns a tuple of (command_type, command_args, raw_text)
         """
-        text = text.lower().strip()
-        
-        # Check command patterns
+        # Preserve original stripped text
+        text_stripped = text.strip()
+        text_lower = text_stripped.lower()
+
+        # 1) "ask" prefix override: force to OpenAI
+        if text_lower.startswith('ask '):
+            remaining = text_stripped[len('ask '):].strip()
+            return ('general_query', None, remaining)
+
+        # 2) Conversation mode: always fallback to OpenAI
+        if self.mode == 'conversation':
+            return ('general_query', None, text_stripped)
+
+        # 3) Default: regex-based command matching
+        text = text_lower
         for cmd_type, pattern in self.command_patterns.items():
             match = re.search(pattern, text, re.IGNORECASE)
             if match:
-                # Extract any command arguments from the regex groups
                 args = match.groups()[1:] if len(match.groups()) > 1 else match.groups()
-                return (cmd_type, args, text)
-        
-        # If no pattern matches, return as a general query
-        return ('general_query', None, text)
+                return (cmd_type, args, text_stripped)
+
+        # 4) Fallback: general query to OpenAI
+        return ('general_query', None, text_stripped)
         
     def execute_command(self, command_type, command_args=None, raw_text="", user_context=None):
         """Execute a command based on its type and arguments"""
         print(f"Executing command: {command_type} with args: {command_args}")
         
-        # Choose command execution based on type
         if command_type == 'time':
             return self._handle_time()
-            
         elif command_type == 'date':
             return self._handle_date()
-            
         elif command_type == 'weather':
             return self._handle_weather()
-            
         elif command_type == 'weather_location':
             if command_args and command_args[0]:
                 return self._handle_weather_location(command_args[0])
             return "I need to know which location to check the weather for."
-            
         elif command_type == 'reminder':
             if command_args and command_args[0]:
                 return self._handle_reminder(command_args[0])
             return "I need to know what to remind you about."
-            
         elif command_type == 'timer':
             if command_args and command_args[0]:
                 return self._handle_timer(command_args[0])
             return "Please specify how long to set the timer for."
-            
         elif command_type == 'lights':
             if command_args and command_args[0] in ['on', 'off']:
                 return self._handle_lights(command_args[0])
             return "I need to know whether to turn the lights on or off."
-            
         elif command_type == 'music':
             return self._handle_music_play()
-            
         elif command_type == 'stop_music':
             return self._handle_music_stop()
-            
         elif command_type == 'volume':
             if command_args and command_args[0]:
                 return self._handle_volume(command_args[0])
             return "Please specify what volume level you want."
-            
         elif command_type == 'search':
             if command_args and command_args[0]:
                 return self._handle_search(command_args[0])
             return "What would you like me to search for?"
-
         elif command_type == 'open':
             if command_args and command_args[0]:
                 return self._handle_open(command_args[0])
             return "What would you like me to open?"
-            
         elif command_type == 'news':
             return self._handle_news()
-            
         elif command_type == 'joke':
             return self._handle_joke()
-            
         elif command_type == 'calendar':
             return self._handle_calendar()
-            
         else:  # general_query
-            return self._handle_general_query(raw_text, user_context)
+            # Defer to AssistantController for OpenAI handling
+            return None
             
     def _handle_time(self):
         """Return the current time"""
@@ -367,5 +366,5 @@ class CommandHandler:
         
     def _handle_general_query(self, text, user_context=None):
         """Handle general queries by deferring to the OpenAI API"""
-        # This should be handled by the parent class through OpenAI
+        # This will be handled by the AssistantController through OpenAI
         return None
