@@ -1,0 +1,806 @@
+--- New session started at 2025-05-03 18:06:08 ---
+[2025-05-03 18:06:09] Starting audio processing...
+[2025-05-03 18:06:09] Starting audio processing loop with self-healing...
+[2025-05-03 18:06:09] Starting face recognition...
+[2025-05-03 18:06:09] FFmpeg audio stream started successfully.
+[2025-05-03 18:06:39] Wake word check transcription: i said
+[2025-05-03 18:06:39] Audio buffer and queue reset after command processing.
+[2025-05-03 18:06:46] Wake word check transcription: assistant.
+[2025-05-03 18:06:46] Wake word detected. Capturing full command...
+[2025-05-03 18:06:46] Capturing command audio...
+[2025-05-03 18:06:47] Detected end of speech (silence).
+[2025-05-03 18:06:47] Captured 116800 samples of command audio.
+[2025-05-03 18:06:48] Full command transcription: assistant, show reminders.
+[2025-05-03 18:06:48] handle_wake_word called with: assistant, show reminders. (greeting=False)
+[2025-05-03 18:06:48] Acquired TTS lock
+[2025-05-03 18:06:48] Received command text: assistant, show reminders. for user: Aidan
+[2025-05-03 18:06:48] Processing command: assistant, show reminders. for user: Aidan
+[2025-05-03 18:06:48] Parsing command: 'assistant, show reminders.' for user: Aidan
+[2025-05-03 18:06:48] Initial parse returned general_query; retrying with forced command parse.
+[2025-05-03 18:06:48] Forced command type: reminder
+[2025-05-03 18:06:48] Parsed command type: reminder, args: ('assistant, show reminders.',)
+[2025-05-03 18:06:48] Executing reminder with args ('assistant, show reminders.',) for user Aidan
+[2025-05-03 18:06:48] Reminder added for Aidan: assistant, show reminders. at unspecified time
+[2025-05-03 18:06:48] Command executed: reminder, Result: Okay! I'll remind Aidan to assistant, show reminders..
+[2025-05-03 18:06:56] Wake word check transcription: it's just
+[2025-05-03 18:06:56] Audio buffer and queue reset after command processing.
+[2025-05-03 18:06:56] Command processed and response given.
+[2025-05-03 18:06:56] Audio buffer and queue reset after command processing.
+[2025-05-03 18:07:02] Wake word check transcription: assistant, list-
+[2025-05-03 18:07:02] Wake word detected. Capturing full command...
+[2025-05-03 18:07:02] Capturing command audio...
+[2025-05-03 18:07:03] Detected end of speech (silence).
+[2025-05-03 18:07:03] Captured 104000 samples of command audio.
+[2025-05-03 18:07:04] Full command transcription: assistant, list reminders.
+[2025-05-03 18:07:04] handle_wake_word called with: assistant, list reminders. (greeting=False)
+[2025-05-03 18:07:04] Acquired TTS lock
+[2025-05-03 18:07:04] Received command text: assistant, list reminders. for user: Z
+[2025-05-03 18:07:04] Processing command: assistant, list reminders. for user: Z
+[2025-05-03 18:07:04] Parsing command: 'assistant, list reminders.' for user: Z
+[2025-05-03 18:07:04] Initial parse returned general_query; retrying with forced command parse.
+[2025-05-03 18:07:04] Forced command type: reminder
+[2025-05-03 18:07:04] Parsed command type: reminder, args: ('assistant, list reminders.',)
+[2025-05-03 18:07:04] Executing reminder with args ('assistant, list reminders.',) for user Z
+[2025-05-03 18:07:04] Reminder added for Z: assistant, list reminders. at unspecified time
+[2025-05-03 18:07:04] Command executed: reminder, Result: Okay! I'll remind Z to assistant, list reminders..
+[2025-05-03 18:07:13] Wake word check transcription: 
+[2025-05-03 18:07:13] Audio buffer and queue reset after command processing.
+[2025-05-03 18:07:13] Command processed and response given.
+[2025-05-03 18:07:13] Audio buffer and queue reset after command processing.
+[2025-05-03 18:07:13] Assistant stopped
+[2025-05-03 18:32:29] Loading face encodings from encodings.pickle
+[2025-05-03 18:32:29] Loaded 37 face encodings
+[2025-05-03 18:32:29] Starting face recognition from UDP stream on port 1234
+[2025-05-03 18:32:29] Starting FFmpeg video subprocess: ffmpeg -i udp://0.0.0.0:1234?fifo_size=10000000&overrun_nonfatal=1 -f rawvideo -pix_fmt bgr24 -
+[2025-05-03 18:33:28] Loading face encodings from encodings.pickle
+[2025-05-03 18:33:28] Loaded 37 face encodings
+[2025-05-03 18:33:28] Starting face recognition from UDP stream on port 1234
+[2025-05-03 18:33:28] Starting FFmpeg video subprocess: ffmpeg -i udp://0.0.0.0:1234?fifo_size=10000000&overrun_nonfatal=1 -f rawvideo -pix_fmt bgr24 -
+[2025-05-03 18:35:33] Loading face encodings from encodings.pickle
+[2025-05-03 18:35:33] Loaded 37 face encodings
+[2025-05-03 18:35:33] Starting fallback face recognition from UDP stream on port 1234
+[2025-05-03 18:35:33] Starting FFmpeg video subprocess: ffmpeg -i udp://0.0.0.0:1234?fifo_size=10000000&overrun_nonfatal=1 -f rawvideo -pix_fmt bgr24 -
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:39] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:40] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:41] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:42] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:43] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:44] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:45] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:46] Detected 1 faces in frame.
+[2025-05-03 18:35:47] Detected 1 faces in frame.
+[2025-05-03 18:35:47] Detected 1 faces in frame.
+[2025-05-03 18:35:47] Detected 1 faces in frame.
+[2025-05-03 18:36:38] Successfully imported face_recognition library.
+[2025-05-03 18:36:38] Successfully imported face_recognition library.
+[2025-05-03 18:36:38] Loading face encodings from encodings.pickle
+[2025-05-03 18:36:38] Loaded 37 face encodings
+[2025-05-03 18:36:38] Starting face recognition from UDP stream on port 1234
+[2025-05-03 18:36:38] Starting FFmpeg video subprocess: ffmpeg -i udp://0.0.0.0:1234?fifo_size=10000000&overrun_nonfatal=1 -f rawvideo -pix_fmt bgr24 -
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:44] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:45] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:46] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:47] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:48] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:49] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:50] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:51] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:36:52] face_recognition error: module 'face_recognition' has no attribute 'face_locations'
+[2025-05-03 18:37:54] ERROR: Local file named 'face_recognition.py' detected. This will shadow the actual face_recognition library. Please rename it.
+[2025-05-03 18:38:00] ERROR: Local file named 'face_recognition.py' detected. This will shadow the actual face_recognition library. Please rename it.
+[2025-05-03 18:38:01] ERROR: Local file named 'face_recognition.py' detected. This will shadow the actual face_recognition library. Please rename it.
+[2025-05-03 18:40:45] Loading face encodings from encodings.pickle
+[2025-05-03 18:40:45] Loaded 37 face encodings
+[2025-05-03 18:40:45] Starting face recognition from UDP stream on port 1234
+[2025-05-03 18:40:45] Starting FFmpeg video subprocess: ffmpeg -i udp://0.0.0.0:1234?fifo_size=10000000&overrun_nonfatal=1 -f rawvideo -pix_fmt bgr24 -
+[2025-05-03 18:40:51] Playing welcome message for James
+[2025-05-03 18:40:56] Playing welcome message for Aidan
+[2025-05-03 18:41:08] Warning: Voice file voice_lines\ZRecog.mp3 not found

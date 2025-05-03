@@ -3,7 +3,7 @@ import os
 import time
 import threading
 import openai
-from face_recognition import FaceRecognizer
+from video_processor import FaceRecognizer
 from command_handler import CommandHandler
 from audio_processor import AudioProcessor
 from text_to_speech import TextToSpeech

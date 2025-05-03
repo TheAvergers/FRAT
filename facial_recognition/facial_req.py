@@ -3,7 +3,7 @@
 # import the necessary packages
 from imutils.video import VideoStream
 from imutils.video import FPS
-import face_recognition
+import video_processor
 import imutils
 import pickle
 import time
@@ -37,16 +37,16 @@ while True:
 	frame = vs.read()
 	frame = imutils.resize(frame, width=500)
 	# Detect the fce boxes
-	boxes = face_recognition.face_locations(frame)
+	boxes = video_processor.face_locations(frame)
 	# compute the facial embeddings for each face bounding box
-	encodings = face_recognition.face_encodings(frame, boxes)
+	encodings = video_processor.face_encodings(frame, boxes)
 	names = []
 
 	# loop over the facial embeddings
 	for encoding in encodings:
 		# attempt to match each face in the input image to our known
 		# encodings
-		matches = face_recognition.compare_faces(data["encodings"],
+		matches = video_processor.compare_faces(data["encodings"],
 			encoding)
 		name = "Unknown" #if face is not recognized, then print Unknown
 

@@ -2,7 +2,7 @@
 
 # import the necessary packages
 from imutils import paths
-import face_recognition
+import video_processor
 #import argparse
 import pickle
 import cv2
@@ -30,11 +30,11 @@ for (i, imagePath) in enumerate(imagePaths):
 
 	# detect the (x, y)-coordinates of the bounding boxes
 	# corresponding to each face in the input image
-	boxes = face_recognition.face_locations(rgb,
+	boxes = video_processor.face_locations(rgb,
 		model="hog")
 
 	# compute the facial embedding for the face
-	encodings = face_recognition.face_encodings(rgb, boxes)
+	encodings = video_processor.face_encodings(rgb, boxes)
 
 	# loop over the encodings
 	for encoding in encodings:
