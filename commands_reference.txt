@@ -1,0 +1,95 @@
+# Command Reference for Smart Home System (Updated)
+
+---
+
+1. Reminders:
+- **Add a reminder:**
+  `add reminder [reminder text]`
+  - Example: `add reminder take out the trash at 8pm`
+
+- **List all reminders:**
+  `list reminders`
+
+- **Delete a reminder:**
+  `delete reminder [reminder text or ID]`
+
+---
+
+2. Timers:
+- **Set a timer:**
+  `set timer for [duration]`
+  - Example: `set timer for 5 minutes`
+
+- **Cancel timer:**
+  `cancel timer`
+
+---
+
+3. Lights:
+- **Turn on lights:**
+  `turn on the lights`
+
+- **Turn off lights:**
+  `turn off the lights`
+
+---
+
+4. Music:
+- **Play music:**
+  `play music`
+
+- **Stop music:**
+  `stop music`
+
+- **Set volume:**
+  `set volume to [level]`
+  - Example: `set volume to 50%`
+
+---
+
+5. Date and Time:
+- **Get current time:**
+  `what is the time`
+
+- **Get current date:**
+  `what is the date`
+
+---
+
+6. Jokes and Fun:
+- **Tell a joke:**
+  `tell me a joke`
+
+---
+
+7. Scheduled Tasks:
+- **Schedule a task with a delay:**
+  `schedule [task] in [duration]`
+  - Example: `schedule telling me my reminders in 30 seconds`
+  - Example: `schedule turning off the lights in 5 minutes`
+
+- **Schedule a task at a specific time:**
+  `schedule [task] at [time]`
+  - Example: `schedule telling me my reminders at 3:30pm`
+  - Example: `schedule playing music at 7am`
+
+
+---
+
+8. General Queries:
+- **Informational query:**
+  `general query: [user's factual or informational question]`
+  - Example: `general query: what color is the sky`
+  - Example: `general query: how many people live in the us`
+
+- **Default fallback:**
+  `unable to process: [brief explanation of why the request could not be understood or matched to a command]`
+
+Example fallback: `unable to process: the request did not match any known commands`
+
+---
+
+**IMPORTANT:**
+When returning the command, DO NOT wrap it in backticks, quotation marks, or any punctuation. Return the command as plain, lowercase raw text only, with no extra formatting or commentary.
+
+Ensure ALL commands are returned as **simple, lowercase strings** and formatted exactly as shown, without additional markup.

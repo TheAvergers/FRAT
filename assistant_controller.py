@@ -82,7 +82,9 @@ class AssistantController:
         Returns (response_text, command_type)
         """
         try:
-            cmd_type, cmd_args, stripped = self.command_handler.parse_command(raw_text)
+            cleaned_text = self.command_handler._convert_to_command_format(raw_text)
+            cmd_type, cmd_args, stripped = self.command_handler.parse_command(cleaned_text)
+
             # track for external inspection
             self.last_command_type = cmd_type
 

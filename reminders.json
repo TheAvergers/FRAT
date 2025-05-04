@@ -1,38 +1,30 @@
 {
   "1": {
-    "text": "cheese",
-    "time": "12 p.m."
+    "reminder": "for 5:00pm to study",
+    "timestamp": "2025-05-04T13:18:36.186285"
   },
   "2": {
-    "text": "cheese",
-    "time": "12pm"
+    "reminder": "break wind at 4:00",
+    "timestamp": "2025-05-04T13:27:18.001616"
   },
   "3": {
-    "text": ". , check my reminders.",
-    "time": null
+    "reminder": "runaround sue at 12:30 am",
+    "timestamp": "2025-05-04T13:29:28.052589"
   },
   "4": {
-    "text": ", check my reminders.",
-    "time": null
+    "reminder": "study again at 5.30 p.m.",
+    "timestamp": "2025-05-04T13:32:23.562869"
   },
   "5": {
-    "text": "list reminders.",
-    "time": null
+    "reminder": "study again at 3.30",
+    "timestamp": "2025-05-04T13:33:50.612237"
   },
   "6": {
-    "text": ", show reminders.",
-    "time": null
+    "reminder": "schedule telling me my reminders in 10 seconds",
+    "timestamp": "2025-05-04T14:03:37.663042"
   },
   "7": {
-    "text": "set a reminder to eat at 12 a.m.",
-    "time": null
-  },
-  "8": {
-    "text": "to eat cheese",
-    "time": null
-  },
-  "9": {
-    "text": "Alex, set a reminder for 3 p.m. to each user.",
-    "time": null
+    "reminder": "schedule telling me my reminders in 30 seconds",
+    "timestamp": "2025-05-04T14:07:57.110009"
   }
 }
