@@ -36,19 +36,32 @@ if __name__ == "__main__":
             continue
 
         try:
-            # Manually call the internal _convert_to_command_format to see what it returns
+            # 1️⃣ Show what we got from the user
             print("Calling _convert_to_command_format directly for debug...")
             rag_converted = assistant.command_handler._convert_to_command_format(user_input)
 
-            # Proceed with normal processing
+            # 2️⃣ Process the command
             response, cmd_type = assistant.process_command(rag_converted)
-
 
             print(f"[Assistant Reply] ({cmd_type}): {response}\n")
             print("--- DEBUG INFO ---")
-            print(f"Last processed input: {user_input}")
+            print(f"Original user input: {user_input}")
             print(f"RAG-converted command: {rag_converted}")
             print(f"Command type: {cmd_type}")
-            print(f"Response: {response}\n")
+            print(f"Response: {response}")
+
+            # Show the last raw transcribed text if available (for scheduler debugging)
+            last_raw = getattr(assistant.command_handler, 'last_raw_transcribed_text', None)
+            if last_raw:
+                print(f"Last raw transcribed text (for schedule tasks): {last_raw}")
+
+            # For schedule commands, remind tester about delayed execution
+            if cmd_type == 'schedule':
+                print("Note: This was a schedule command. Watch logs for delayed task execution.\n")
+            else:
+                print()
+
+
         except Exception as e:
             print(f"Exception occurred during command processing: {e}\n")
+

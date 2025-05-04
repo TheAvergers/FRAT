@@ -82,6 +82,10 @@ class AssistantController:
         Returns (response_text, command_type)
         """
         try:
+
+            # Store the full raw text for scheduler use
+            self.last_raw_text = raw_text
+
             cleaned_text = self.command_handler._convert_to_command_format(raw_text)
             cmd_type, cmd_args, stripped = self.command_handler.parse_command(cleaned_text)
 

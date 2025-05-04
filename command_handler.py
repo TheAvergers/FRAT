@@ -1,4 +1,5 @@
 import re
+import random
 import datetime
 import threading
 import json
@@ -14,8 +15,12 @@ openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 class CommandHandler:
     def __init__(self, tts_engine=None, mode='command'):
+        # for alarm sound
         if not pygame.mixer.get_init():
             pygame.mixer.init()
+        # for Music playback
+        self.music_channel = pygame.mixer.Channel(1)
+
 
         self.tts_engine = tts_engine
         self.mode = mode
@@ -55,6 +60,9 @@ class CommandHandler:
         return ""
 
     def process_audio_command(self, transcribed_text):
+        #For scheduler use
+        self.last_raw_transcribed_text = transcribed_text
+
         print(f"Received audio command: {transcribed_text}")
         cleaned_text = self._strip_wake_word(transcribed_text)
         rag_ready_command = self._convert_to_command_format(cleaned_text)
@@ -99,8 +107,6 @@ class CommandHandler:
     def parse_command(self, text, user_context=None):
         txt = text.strip().lower()
         print(f"DEBUG: Parsing normalized command: '{txt}'")
-
-
         # Normalize whitespace
         txt = re.sub(r'\s+', ' ', txt)
 
@@ -116,13 +122,16 @@ class CommandHandler:
             reminder_text = txt.replace('add reminder ', '').replace('set reminder ', '').strip()
             return 'reminder', (reminder_text,), text
 
-        if 'turn on the lights' in txt:
+        if re.search(r'\bturn(ing)? on the lights\b', txt):
             return 'lights', ('on',), text
-        if 'turn off the lights' in txt or 'lights off' in txt:
+        if re.search(r'\bturn(ing)? off the lights\b', txt) or 'lights off' in txt:
             return 'lights', ('off',), text
 
-        if 'play music' in txt:
-            return 'music', None, text
+        music_match = re.search(r'(?:play|playing)\s+(\w+)?\s*music', txt)
+        if music_match:
+            genre = music_match.group(1)
+            return 'music', (genre,), text
+        
         if 'stop music' in txt:
             return 'stop_music', None, text
 
@@ -155,8 +164,12 @@ class CommandHandler:
         handler = mapping.get(cmd)
         print(f"DEBUG: Executing command '{cmd}' with args: {args}")
         if handler:
-            result = handler(*(args or []))
+            if cmd == 'schedule':
+                result = handler(*(args or []), original_text=getattr(self, 'last_raw_transcribed_text', None))
+            else:
+                result = handler(*(args or []))
             return result
+
         return f"The command '{raw_text}' was not recognized as a valid command in this system. Please try again with a supported request."
 
 
@@ -241,16 +254,52 @@ class CommandHandler:
     def _handle_joke(self):
         return "Why did the scarecrow win an award? Because he was outstanding in his field!"
 
-    def _handle_music_play(self):
-        return "Playing music. (Placeholder)"
+    def _handle_music_play(self, genre=None):
+        music_root = os.path.join(os.getcwd(), 'music')
+        chosen_track = None
+
+        if genre:
+            genre_folder = os.path.join(music_root, genre.lower())
+            if not os.path.exists(genre_folder):
+                return f"Sorry, the genre '{genre}' was not found."
+            
+            tracks = [f for f in os.listdir(genre_folder)
+                    if f.lower().endswith(('.mp3', '.wav', '.ogg'))]
+            if not tracks:
+                return f"No tracks found in the '{genre}' genre."
+            
+            chosen_track = os.path.join(genre_folder, random.choice(tracks))
+        else:
+            tracks = [os.path.join(dp, f) for dp, dn, filenames in os.walk(music_root)
+                    for f in filenames if f.lower().endswith(('.mp3', '.wav', '.ogg'))]
+            if not tracks:
+                return "No music files found in the library."
+            
+            chosen_track = random.choice(tracks)
+
+        try:
+            print(f"Loading and playing: {chosen_track}")
+            music_sound = pygame.mixer.Sound(chosen_track)
+            self.music_channel.play(music_sound, loops=-1)
+            return f"Playing {genre if genre else 'music'} now."
+        except Exception as e:
+            print(f"Error playing music: {e}")
+            return "Sorry, I couldn't play the music."
+
+
 
     def _handle_stop_music(self):
-        return "Stopping music. (Placeholder)"
+        if self.music_channel.get_busy():
+            self.music_channel.stop()
+            return "Music stopped."
+        else:
+            return "No music is currently playing."
+
 
     def _handle_volume(self, volume_text):
         return f"Adjusting volume based on your command: {volume_text}. (Placeholder)"
     
-    def _handle_schedule(self, schedule_text):
+    def _handle_schedule(self, schedule_text, original_text=None):
         print(f"Scheduling task: {schedule_text}")
 
         # Try to extract delay (e.g., "in 30 seconds")
@@ -262,7 +311,8 @@ class CommandHandler:
             unit = delay_match.group(2)
             delay_seconds = value * 60 if 'min' in unit else value
             print(f"Task will run in {delay_seconds} seconds.")
-            threading.Thread(target=self._schedule_after_delay, args=(delay_seconds, schedule_text), daemon=True).start()
+            threading.Thread(target=self._schedule_after_delay,args=(delay_seconds, schedule_text, original_text),daemon=True).start()
+
             return f"Task scheduled to run in {delay_seconds} seconds."
 
         elif time_match:
@@ -290,20 +340,34 @@ class CommandHandler:
         else:
             return "Sorry, I couldn't understand the schedule timing."
     
-    def _schedule_after_delay(self, delay_seconds, schedule_text):
+    def _schedule_after_delay(self, delay_seconds, schedule_text, original_text=None):
         print(f"Scheduled task sleeping for {delay_seconds} seconds...")
         time.sleep(delay_seconds)
 
-        # Clean up the schedule text by removing the 'schedule' keyword
-        cleaned_text = schedule_text.strip().lower()
-        if cleaned_text.startswith('schedule '):
-            cleaned_text = cleaned_text[len('schedule '):].strip()
+        # Prefer using the original raw text for richer context if available
+        if original_text:
+            print(f"Original raw command: {original_text}")
+            # Remove trailing time-based phrases (helps RAG avoid guessing it's another schedule)
+            cleaned_raw = re.sub(r'\bin \d+\s*(seconds|second|minutes|minute|min)\b', '', cleaned_raw, flags=re.IGNORECASE)
+            cleaned_raw = re.sub(r'\bat \d{1,2}:\d{2}(?:\s*(am|pm)?)?', '', cleaned_raw, flags=re.IGNORECASE)
+            cleaned_raw = cleaned_raw.strip()
+            print(f"Cleaned raw command for RAG: {cleaned_raw}")
+        else:
+            cleaned_raw = schedule_text.strip().lower()
+            if cleaned_raw.startswith('schedule '):
+                cleaned_raw = cleaned_raw[len('schedule '):].strip()
 
-        print(f"Executing scheduled command (pre-RAG): {cleaned_text}")
+        print(f"Executing scheduled command (pre-RAG): {cleaned_raw}")
 
         # Pass through RAG to normalize the command
-        rag_ready_command = self._convert_to_command_format(cleaned_text)
-        print(f"Scheduled command after RAG: {rag_ready_command}")
+        rag_ready_command = self._convert_to_command_format(cleaned_raw)
+
+        # Ensure 'schedule' is fully stripped from the RAG response too
+        rag_ready_command = rag_ready_command.strip()
+        if rag_ready_command.startswith('schedule '):
+            rag_ready_command = rag_ready_command[len('schedule '):].strip()
+
+        print(f"Scheduled command after RAG (post-strip): {rag_ready_command}")
 
         # Parse and execute the cleaned + RAG-processed command
         cmd_type, cmd_args, _ = self.parse_command(rag_ready_command)
