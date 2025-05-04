@@ -83,9 +83,9 @@
   - Example: `general query: how many people live in the us`
 
 - **Default fallback:**
-  `unable to process: [brief explanation of why the request could not be understood or matched to a command]`
+  `Given: [brief explanation of why the request could not be understood or matched to a command]`
 
-Example fallback: `unable to process: the request did not match any known commands`
+Example fallback: `did not match any known commands`
 
 ---
 

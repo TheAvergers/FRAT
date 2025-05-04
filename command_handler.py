@@ -1,17 +1,18 @@
 import re
 import random
-import datetime
 import threading
 import json
 import os
 import time
 import openai
 import pygame
-from datetime import timedelta
+from datetime import datetime, timedelta
+
 
 REMINDERS_FILE = os.environ.get('REMINDERS_FILE', 'reminders.json')
 COMMANDS_REFERENCE_FILE = os.environ.get('COMMANDS_REFERENCE_FILE', 'commands_reference.txt')
 openai.api_key = os.environ.get('OPENAI_API_KEY')
+
 
 class CommandHandler:
     def __init__(self, tts_engine=None, mode='command'):
@@ -26,8 +27,29 @@ class CommandHandler:
         self.mode = mode
         self.active_reminders = {}
         self.timer_counter = 0
+        self._reload_scheduled_tasks()
         self._load_reminders()
         self.command_reference = self._load_command_reference()
+
+    def _reload_scheduled_tasks(self):
+        schedule_file = "scheduled_tasks.json"
+        if not os.path.exists(schedule_file):
+            return
+        with open(schedule_file, "r") as f:
+            tasks = json.load(f)
+        now = datetime.now()
+        for task in tasks:
+            run_at = datetime.strptime(task['run_at'], "%Y-%m-%d %H:%M:%S")
+            delay_seconds = (run_at - now).total_seconds()
+            if delay_seconds > 0:
+                print(f"Re-scheduling: {task['command']} in {delay_seconds:.0f} seconds")
+                threading.Thread(
+                    target=self._schedule_after_delay,
+                    args=(delay_seconds, task['command']),
+                    daemon=True
+                ).start()
+            else:
+                print(f"Skipping past task: {task['command']}")
 
     def _load_reminders(self):
         if os.path.exists(REMINDERS_FILE):
@@ -244,11 +266,11 @@ class CommandHandler:
         return "Please specify whether to turn the lights on or off."
 
     def _handle_time(self):
-        now = datetime.datetime.now().strftime('%H:%M')
+        now = datetime.now().strftime('%H:%M')
         return f"The current time is {now}."
 
     def _handle_date(self):
-        today = datetime.datetime.now().strftime('%A, %B %d, %Y')
+        today = datetime.now().strftime('%A, %B %d, %Y')
         return f"Today's date is {today}."
 
     def _handle_joke(self):
@@ -313,12 +335,14 @@ class CommandHandler:
             print(f"Task will run in {delay_seconds} seconds.")
             threading.Thread(target=self._schedule_after_delay,args=(delay_seconds, schedule_text, original_text),daemon=True).start()
 
+
             return f"Task scheduled to run in {delay_seconds} seconds."
 
         elif time_match:
             time_str = time_match.group(1)
             am_pm = time_match.group(2)
-            now = datetime.datetime.now()
+            now = datetime.now()
+
 
             # Parse the time (e.g., 3:30 or 15:30)
             hour, minute = map(int, time_str.split(':'))
@@ -330,16 +354,35 @@ class CommandHandler:
 
             scheduled_time = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
             if scheduled_time < now:
-                scheduled_time += datetime.timedelta(days=1)  # if time has passed, schedule for next day
+                scheduled_time += timedelta(days=1) # if time has passed, schedule for next day
 
             delay_seconds = (scheduled_time - now).total_seconds()
             print(f"Task will run at {scheduled_time} ({int(delay_seconds)} seconds from now).")
             threading.Thread(target=self._schedule_after_delay, args=(delay_seconds, schedule_text), daemon=True).start()
+
+            # Save schedule to file
+            schedule_entry = {"command": schedule_text, "run_at": (datetime.now() + timedelta(seconds=delay_seconds)).strftime("%Y-%m-%d %H:%M:%S")}
+            self._save_scheduled_task(schedule_entry)
+
             return f"Task scheduled to run at {scheduled_time.strftime('%H:%M')}."
 
         else:
             return "Sorry, I couldn't understand the schedule timing."
-    
+        
+    def _save_scheduled_task(self, task):
+        schedule_file = "scheduled_tasks.json"
+        try:
+            if os.path.exists(schedule_file):
+                with open(schedule_file, "r") as f:
+                    data = json.load(f)
+            else:
+                data = []
+            data.append(task)
+            with open(schedule_file, "w") as f:
+                json.dump(data, f, indent=4)
+        except Exception as e:
+            print(f"Failed to save scheduled task: {e}")
+
     def _schedule_after_delay(self, delay_seconds, schedule_text, original_text=None):
         print(f"Scheduled task sleeping for {delay_seconds} seconds...")
         time.sleep(delay_seconds)
@@ -347,7 +390,7 @@ class CommandHandler:
         # Prefer using the original raw text for richer context if available
         if original_text:
             print(f"Original raw command: {original_text}")
-            # Remove trailing time-based phrases (helps RAG avoid guessing it's another schedule)
+            cleaned_raw = original_text  # 🛠 DEFINE THIS FIRST
             cleaned_raw = re.sub(r'\bin \d+\s*(seconds|second|minutes|minute|min)\b', '', cleaned_raw, flags=re.IGNORECASE)
             cleaned_raw = re.sub(r'\bat \d{1,2}:\d{2}(?:\s*(am|pm)?)?', '', cleaned_raw, flags=re.IGNORECASE)
             cleaned_raw = cleaned_raw.strip()
