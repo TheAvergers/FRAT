@@ -65,6 +65,12 @@
   - Example: shuffle jazz
   - Example: shuffle rock
   - Example: shuffle all music
+  
+- **Skip to next song:**
+  next song
+  - Example: next song
+  - Example: skip song
+
 
 
 ---

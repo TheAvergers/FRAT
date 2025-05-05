@@ -52,6 +52,14 @@ class AudioProcessor:
 
     def _normalize_transcript(self, text):
         return [word.strip().lower() for word in text.replace('.', '').split()]
+    
+    def _clear_audio_queue(self):
+        """Clear out any buffered audio chunks before starting fresh command capture."""
+        while not self.audio_queue.empty():
+            try:
+                self.audio_queue.get_nowait()
+            except queue.Empty:
+                break
 
     def _check_and_process_audio_for_wake_word(self):
         buffer_copy = self.audio_buffer.copy()
@@ -84,6 +92,7 @@ class AudioProcessor:
             if any(w in words_in_text for w in keywords):
                 print("Wake word detected.")
                 self._play_bing_sound_and_wait()
+                self._clear_audio_queue()
                 self._capture_and_transcribe_command()
             else:
                 print("No wake word detected in transcription.")

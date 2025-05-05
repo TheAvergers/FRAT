@@ -22,7 +22,7 @@ class CommandHandler:
         # for Music playback
         self.music_channel = pygame.mixer.Channel(1)
         pygame.mixer.music.set_volume(0.5)
-
+        self.stop_playlist_flag = threading.Event()
         self.tts_engine = tts_engine
         self.mode = mode
         self.active_reminders = {}
@@ -81,15 +81,21 @@ class CommandHandler:
                 print(f"Failed to load command reference: {e}")
         return ""
 
-    def process_audio_command(self, transcribed_text):
+    def process_audio_command(self, transcribed_text, do_rag=False):
         #For scheduler use
         self.last_raw_transcribed_text = transcribed_text
 
         print(f"Received audio command: {transcribed_text}")
         cleaned_text = self._strip_wake_word(transcribed_text)
-        rag_ready_command = self._convert_to_command_format(cleaned_text)
-        print(f"RAG processed command: {rag_ready_command}")
-        cmd_type, cmd_args, raw_text = self.parse_command(rag_ready_command)
+
+        if do_rag:
+            print("Performing RAG step (manual/test mode).")
+            cleaned_text = self._convert_to_command_format(cleaned_text)
+        else:
+            print(f"Processing cleaned command (no RAG here): {cleaned_text}")
+
+        cmd_type, cmd_args, raw_text = self.parse_command(cleaned_text)
+
         try:
             result = self.execute_command(cmd_type, cmd_args, raw_text)
             return result
@@ -109,9 +115,9 @@ class CommandHandler:
         )
         try:
             response = openai.ChatCompletion.create(
-                model="gpt-4",
+                model="gpt-3.5-turbo",
                 messages=[
-                    {"role": "system", "content": "Convert user requests into smart home commands."},
+                    {"role": "system", "content": "Convert user requests into smart home commands. Ensure you remove any scheduling boilerplate like time expressions and only return the actionable command, exactly as shown in the reference."},
                     {"role": "user", "content": reference_text}
                 ],
                 max_tokens=100,
@@ -143,6 +149,16 @@ class CommandHandler:
         if txt.startswith('add reminder ') or txt.startswith('set reminder '):
             reminder_text = txt.replace('add reminder ', '').replace('set reminder ', '').strip()
             return 'reminder', (reminder_text,), text
+        
+        # Strip scheduling boilerplate like time specs
+        txt = re.sub(r'\bat \d{1,2}:\d{2}(?:\s*(am|pm)?)?\b', '', txt)
+        txt = re.sub(r'\bin \d+\s*(seconds|second|minutes|minute|min)\b', '', txt)
+        # Strip leading 'playing' or 'schedule' if it’s dangling
+        txt = re.sub(r'^(playing|schedule)\s+', '', txt).strip()
+        txt = txt.strip()
+
+        print(f"Parser cleaned command for parsing: '{txt}'")
+
 
         if re.search(r'\bturn(ing)? on the lights\b', txt):
             return 'lights', ('on',), text
@@ -157,6 +173,11 @@ class CommandHandler:
                 target = None  # Avoid redundancy like "play music music"
             return 'music', (target.strip() if target else None,), text
         
+        known_genres = ['jazz', 'rock', 'pop', 'classical', 'hiphop', 'blues', 'metal', 'country']
+        if txt in known_genres:
+            return 'music', (txt,), text
+
+        
         # Set volume to a specific level
         volume_match = re.search(r'(set volume to|volume)\s*(\d+)\s*%?', txt)
         if volume_match:
@@ -168,16 +189,20 @@ class CommandHandler:
             return 'adjust_volume', ('up',), text
         if re.search(r'(decrease|turn down|lower).*volume', txt):
             return 'adjust_volume', ('down',), text
-        
+
+        # Play next song
+        if 'next song' in txt or 'skip song' in txt:
+            return 'next_song', None, text
+
         # Shuffle genre
         shuffle_match = re.search(r'shuffle\s+(?P<genre>\w+)', txt)
         if shuffle_match:
             genre = shuffle_match.group('genre')
             return 'shuffle_music', (genre,), text
-
-        # Stop music      
-        if 'stop music' in txt:
+        
+        if re.search(r'\bstop music\b', txt):
             return 'stop_music', None, text
+
 
 
         if 'what is the time' in txt or txt == 'time':
@@ -205,6 +230,7 @@ class CommandHandler:
             'set_volume': self._handle_set_volume,
             'adjust_volume': self._handle_adjust_volume,
             'shuffle_music': self._handle_shuffle_music,
+            'next_song': self._handle_next_song,
             'schedule': self._handle_schedule,
 
         }
@@ -332,7 +358,14 @@ class CommandHandler:
         except Exception as e:
             print(f"Error playing music: {e}")
             return "Sorry, I couldn't play the music."
-
+        
+    def _handle_next_song(self):
+        if self.music_channel.get_busy():
+            self.music_channel.stop()  # This triggers moving to the next song automatically
+            return "Skipping to the next song."
+        else:
+            return "No song is currently playing to skip."
+        
     def _handle_shuffle_music(self, genre):
         music_root = os.path.join(os.getcwd(), 'music')
         track_list = []
@@ -360,24 +393,34 @@ class CommandHandler:
 
         print(f"Shuffling and playing tracks: {track_list}")
 
+
         def play_playlist(tracks):
             for track in tracks:
+                if self.stop_playlist_flag.is_set():
+                    print("Stop flag detected, ending playlist playback.")
+                    break
                 try:
                     print(f"Playing: {track}")
                     music_sound = pygame.mixer.Sound(track)
                     self.music_channel.play(music_sound)
                     while self.music_channel.get_busy():
+                        if self.stop_playlist_flag.is_set():
+                            print("Stop flag detected mid-track, stopping playback.")
+                            self.music_channel.stop()
+                            return
                         time.sleep(0.1)
                 except Exception as e:
                     print(f"Error playing {track}: {e}")
-                    continue  # Move to the next track if there's an error
+                    continue
 
+        self.stop_playlist_flag.clear()
         threading.Thread(target=play_playlist, args=(track_list,), daemon=True).start()
 
         return f"Shuffling and playing {genre} music."
 
 
     def _handle_stop_music(self):
+        self.stop_playlist_flag.set()
         if self.music_channel.get_busy():
             self.music_channel.stop()
             return "Music stopped."

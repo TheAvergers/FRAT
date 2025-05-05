@@ -18,5 +18,17 @@
     {
         "command": "schedule playing music at 3:44pm",
         "run_at": "2025-05-04 15:44:00"
+    },
+    {
+        "command": "schedule telling me my reminders at 3:30pm",
+        "run_at": "2025-05-05 15:30:00"
+    },
+    {
+        "command": "schedule playing jazz at 10:08",
+        "run_at": "2025-05-05 10:08:00"
+    },
+    {
+        "command": "schedule playing jazz at 10:08pm",
+        "run_at": "2025-05-04 22:08:00"
     }
 ]
