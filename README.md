@@ -190,8 +190,9 @@ Place `encodings.pickle` in the assistant’s working directory.
 ---
 ### 10. Add custom greeting sounds files 
 
-The greeting voicelines are not made on demand and require the user to add thier own mp3/wav files of name {face_encoded_name}Recog.mp3/wav .
+The greeting voicelines are not made on demand and require the user to add thier own mp3/wav files of name {face_encoded_name}Recog.mp3/wav.
 Support might come later for fallback tts responce.
+
 ---
 ### 11. Launching the Assistant
 
