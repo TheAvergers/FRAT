@@ -1,4 +1,4 @@
-# Smart AI Home Assistant
+# Face Regonition Assistant Test
 
 Welcome to your Smart AI Home Assistant! This guide walks you through setting up the Raspberry Pi to stream video and audio, configuring your Windows assistant environment, and getting everything running.
 
