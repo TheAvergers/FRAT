@@ -3,7 +3,7 @@ import os
 import time
 import threading
 import openai
-from face_recognition import FaceRecognizer
+from video_processor import FaceRecognizer
 from command_handler import CommandHandler
 from audio_processor import AudioProcessor
 from text_to_speech import TextToSpeech
@@ -82,7 +82,13 @@ class AssistantController:
         Returns (response_text, command_type)
         """
         try:
-            cmd_type, cmd_args, stripped = self.command_handler.parse_command(raw_text)
+
+            # Store the full raw text for scheduler use
+            self.last_raw_text = raw_text
+
+            cleaned_text = self.command_handler._convert_to_command_format(raw_text)
+            cmd_type, cmd_args, stripped = self.command_handler.parse_command(cleaned_text)
+
             # track for external inspection
             self.last_command_type = cmd_type
 
@@ -106,7 +112,7 @@ class AssistantController:
 
             # Query OpenAI
             completion = openai.ChatCompletion.create(
-                model="gpt-4",
+                model="gpt-3.5-turbo",
                 messages=messages,
                 max_tokens=150,
                 temperature=0.7

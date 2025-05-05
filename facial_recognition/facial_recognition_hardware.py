@@ -1,4 +1,4 @@
-import face_recognition
+import video_processor
 import cv2
 import numpy as np
 from picamera2 import Picamera2
@@ -44,19 +44,19 @@ def process_frame(frame):
     rgb_resized_frame = cv2.cvtColor(resized_frame, cv2.COLOR_BGR2RGB)
     
     # Find all the faces and face encodings in the current frame of video
-    face_locations = face_recognition.face_locations(rgb_resized_frame)
-    face_encodings = face_recognition.face_encodings(rgb_resized_frame, face_locations, model='large')
+    face_locations = video_processor.face_locations(rgb_resized_frame)
+    face_encodings = video_processor.face_encodings(rgb_resized_frame, face_locations, model='large')
     
     face_names = []
     authorized_face_detected = False
     
     for face_encoding in face_encodings:
         # See if the face is a match for the known face(s)
-        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+        matches = video_processor.compare_faces(known_face_encodings, face_encoding)
         name = "Unknown"
         
         # Use the known face with the smallest distance to the new face
-        face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+        face_distances = video_processor.face_distance(known_face_encodings, face_encoding)
         best_match_index = np.argmin(face_distances)
         if matches[best_match_index]:
             name = known_face_names[best_match_index]

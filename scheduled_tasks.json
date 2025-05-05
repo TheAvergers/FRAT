@@ -1,0 +1,34 @@
+[
+    {
+        "command": "schedule playing music at 3:34",
+        "run_at": "2025-05-05 03:34:00"
+    },
+    {
+        "command": "schedule playing music at 3:41",
+        "run_at": "2025-05-05 03:41:00"
+    },
+    {
+        "command": "schedule playing music at 3:43pm",
+        "run_at": "2025-05-04 15:43:00"
+    },
+    {
+        "command": "schedule playing music at 3:43pm may 4",
+        "run_at": "2025-05-04 15:43:00"
+    },
+    {
+        "command": "schedule playing music at 3:44pm",
+        "run_at": "2025-05-04 15:44:00"
+    },
+    {
+        "command": "schedule telling me my reminders at 3:30pm",
+        "run_at": "2025-05-05 15:30:00"
+    },
+    {
+        "command": "schedule playing jazz at 10:08",
+        "run_at": "2025-05-05 10:08:00"
+    },
+    {
+        "command": "schedule playing jazz at 10:08pm",
+        "run_at": "2025-05-04 22:08:00"
+    }
+]
