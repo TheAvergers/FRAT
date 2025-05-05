@@ -17,7 +17,7 @@ hostname -I
 sudo apt-get update && sudo apt-get install net-tools
 ifconfig
 ```
-> Example output: `192.168.0.25 10.0.0.12` (usually the first is your LAN IP)
+
 
 #### On Windows
 Open Command Prompt and run:
@@ -25,8 +25,8 @@ Open Command Prompt and run:
 ipconfig
 ```
 Look under the adapter you're using:
-- **Wireless LAN adapter Wi-Fi:** shows your Wi-Fi IP (e.g. `192.168.0.166`)
-- **Ethernet adapter Ethernet:** shows your wired IP (e.g. `10.0.0.42`)
+- **Wireless LAN adapter Wi-Fi:** shows your Wi-Fi IP 
+- **Ethernet adapter Ethernet:** shows your wired IP 
 
 > Use the appropriate IP in the Pi streaming commands below.
 
