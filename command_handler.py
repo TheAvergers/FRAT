@@ -115,7 +115,7 @@ class CommandHandler:
         )
         try:
             response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4",
                 messages=[
                     {"role": "system", "content": "Convert user requests into smart home commands. Ensure you remove any scheduling boilerplate like time expressions and only return the actionable command, exactly as shown in the reference."},
                     {"role": "user", "content": reference_text}
@@ -251,7 +251,7 @@ class CommandHandler:
         self.timer_counter += 1
         self.active_reminders[self.timer_counter] = {
             'reminder': cleaned_reminder,
-            'timestamp': datetime.datetime.now().isoformat()
+            'timestamp': datetime.now().isoformat()
         }
         self._save_reminders()
         return f"Reminder set: {cleaned_reminder}"
