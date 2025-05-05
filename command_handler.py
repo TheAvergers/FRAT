@@ -21,7 +21,7 @@ class CommandHandler:
             pygame.mixer.init()
         # for Music playback
         self.music_channel = pygame.mixer.Channel(1)
-
+        pygame.mixer.music.set_volume(0.5)
 
         self.tts_engine = tts_engine
         self.mode = mode
@@ -149,13 +149,36 @@ class CommandHandler:
         if re.search(r'\bturn(ing)? off the lights\b', txt) or 'lights off' in txt:
             return 'lights', ('off',), text
 
-        music_match = re.search(r'(?:play|playing)\s+(\w+)?\s*music', txt)
+        # Play music with optional genre or song name
+        music_match = re.search(r'(?:play|start)\s+(?:some\s+)?(?P<target>.+?)?\s*(music|song|songs)?$', txt)
         if music_match:
-            genre = music_match.group(1)
-            return 'music', (genre,), text
+            target = music_match.group('target')
+            if target and target.strip() in ['music', 'song', 'songs']:
+                target = None  # Avoid redundancy like "play music music"
+            return 'music', (target.strip() if target else None,), text
         
+        # Set volume to a specific level
+        volume_match = re.search(r'(set volume to|volume)\s*(\d+)\s*%?', txt)
+        if volume_match:
+            volume_level = int(volume_match.group(2))
+            return 'set_volume', (volume_level,), text
+
+        # Increase/decrease volume
+        if re.search(r'(increase|turn up|raise).*volume', txt):
+            return 'adjust_volume', ('up',), text
+        if re.search(r'(decrease|turn down|lower).*volume', txt):
+            return 'adjust_volume', ('down',), text
+        
+        # Shuffle genre
+        shuffle_match = re.search(r'shuffle\s+(?P<genre>\w+)', txt)
+        if shuffle_match:
+            genre = shuffle_match.group('genre')
+            return 'shuffle_music', (genre,), text
+
+        # Stop music      
         if 'stop music' in txt:
             return 'stop_music', None, text
+
 
         if 'what is the time' in txt or txt == 'time':
             return 'time', None, text
@@ -179,7 +202,9 @@ class CommandHandler:
             'joke': self._handle_joke,
             'music': self._handle_music_play,
             'stop_music': self._handle_stop_music,
-            'volume': self._handle_volume,
+            'set_volume': self._handle_set_volume,
+            'adjust_volume': self._handle_adjust_volume,
+            'shuffle_music': self._handle_shuffle_music,
             'schedule': self._handle_schedule,
 
         }
@@ -308,6 +333,48 @@ class CommandHandler:
             print(f"Error playing music: {e}")
             return "Sorry, I couldn't play the music."
 
+    def _handle_shuffle_music(self, genre):
+        music_root = os.path.join(os.getcwd(), 'music')
+        track_list = []
+
+        if genre.lower() == 'all':
+            # Shuffle across all music files
+            for dp, dn, filenames in os.walk(music_root):
+                for f in filenames:
+                    if f.lower().endswith(('.mp3', '.wav', '.ogg')):
+                        track_list.append(os.path.join(dp, f))
+        else:
+            # Shuffle within a specific genre folder
+            genre_folder = os.path.join(music_root, genre.lower())
+            if not os.path.exists(genre_folder):
+                return f"Sorry, the genre '{genre}' was not found."
+
+            track_list = [os.path.join(genre_folder, f)
+                        for f in os.listdir(genre_folder)
+                        if f.lower().endswith(('.mp3', '.wav', '.ogg'))]
+
+        if not track_list:
+            return f"No tracks found to shuffle in the '{genre}' genre."
+
+        random.shuffle(track_list)
+
+        print(f"Shuffling and playing tracks: {track_list}")
+
+        def play_playlist(tracks):
+            for track in tracks:
+                try:
+                    print(f"Playing: {track}")
+                    music_sound = pygame.mixer.Sound(track)
+                    self.music_channel.play(music_sound)
+                    while self.music_channel.get_busy():
+                        time.sleep(0.1)
+                except Exception as e:
+                    print(f"Error playing {track}: {e}")
+                    continue  # Move to the next track if there's an error
+
+        threading.Thread(target=play_playlist, args=(track_list,), daemon=True).start()
+
+        return f"Shuffling and playing {genre} music."
 
 
     def _handle_stop_music(self):
@@ -318,8 +385,25 @@ class CommandHandler:
             return "No music is currently playing."
 
 
-    def _handle_volume(self, volume_text):
-        return f"Adjusting volume based on your command: {volume_text}. (Placeholder)"
+    def _handle_set_volume(self, level):
+        level = max(0, min(100, level))  # Clamp between 0 and 100
+        self.music_channel.set_volume(level / 100.0)
+        return f"Set the volume to {level}%."
+
+
+    def _handle_adjust_volume(self, direction):
+        current_volume = self.music_channel.get_volume() * 100
+        delta = 10  # Adjust by 10%
+        if direction == 'up':
+            new_volume = min(100, current_volume + delta)
+        else:
+            new_volume = max(0, current_volume - delta)
+        self.music_channel.set_volume(new_volume / 100.0)
+        return f"{'Increased' if direction == 'up' else 'Decreased'} the volume to {int(new_volume)}%."
+
+
+
+
     
     def _handle_schedule(self, schedule_text, original_text=None):
         print(f"Scheduling task: {schedule_text}")

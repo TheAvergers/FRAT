@@ -36,14 +36,36 @@
 
 4. Music:
 - **Play music:**
-  `play music`
+  play music
+  - Example: play music
+
+- **Play genre:**
+  play [genre] music
+  - Example: play jazz music
+  - Example: play rock music
+  - Example: play classical music
 
 - **Stop music:**
-  `stop music`
+  stop music
 
 - **Set volume:**
-  `set volume to [level]`
-  - Example: `set volume to 50%`
+  set volume to [level]
+  - Example: set volume to 50%
+
+- **Increase volume:**
+  increase volume
+  - Example: increase volume
+
+- **Decrease volume:**
+  decrease volume
+  - Example: decrease volume
+
+- **Shuffle genre:**
+  shuffle [genre]
+  - Example: shuffle jazz
+  - Example: shuffle rock
+  - Example: shuffle all music
+
 
 ---
 
